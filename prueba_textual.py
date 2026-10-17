@@ -14,7 +14,15 @@ class PruebaTextual(App):
     def on_input_submitted(self, event: Input.Submitted) -> None:
         texto = event.value
         resultado = self.query_one("#resultado", Static)
-        resultado.update(f"Has escrito: {texto}")
+
+        try:
+            partes = texto.split(",")
+            coeficientes = [float(p.strip()) for p in partes]
+
+            resultado.update(f"Coeficientes: {coeficientes}")
+
+        except ValueError:
+            resultado.update("Error: introduce números separados por comas.")
 
 
 if __name__ == "__main__":

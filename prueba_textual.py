@@ -1,6 +1,7 @@
 
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Input
+from tf2ss import tf2ss
 
 
 class PruebaTextual(App):
@@ -39,9 +40,15 @@ class PruebaTextual(App):
                 for p in denominador_texto.split(",")
             ]
 
+            A, B, C, D = tf2ss(numerador, denominador)
+
             resultado.update(
-                f"Numerador: {numerador}\n"
-                f"Denominador: {denominador}"
+            f"Numerador: {numerador}\n"
+            f"Denominador: {denominador}\n\n"
+            f"A =\n{A}\n\n"
+            f"B =\n{B}\n\n"
+            f"C =\n{C}\n\n"
+            f"D =\n{D}"
             )
 
         except ValueError:

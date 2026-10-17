@@ -70,24 +70,59 @@ def tf2ss(num, den):
 
 
 # --------------------------------------------------
-# EJEMPLO
+# INTERFAZ DE CONSOLA
 # --------------------------------------------------
 
-num = [1]
-den = [1, -3, 2]
 
-A, B, C, D = tf2ss(num, den)
+def leer_coeficientes(mensaje):
+    """Pide una lista de números al usuario y la devuelve como lista de floats."""
+    while True:
+        texto = input(mensaje)
+        # Acepta "1 -3 2" y también "1, -3, 2"
+        partes = texto.replace(",", " ").split()
 
-print("A =")
-print(A)
+        if not partes:
+            print("Error: debes escribir al menos un coeficiente.")
+            continue
 
-print("\nB =")
-print(B)
+        try:
+            return [float(p) for p in partes]
+        except ValueError:
+            print("Error: solo se admiten números separados por espacios o comas.")
 
-print("\nC =")
-print(C)
 
-print("\nD =")
-print(D)
+def mostrar_matrices(A, B, C, D):
+    for nombre, matriz in (("A", A), ("B", B), ("C", C), ("D", D)):
+        print(f"\n{nombre} =")
+        print(matriz)
+
+
+def main():
+    print("=== Función de transferencia a espacio de estados ===")
+    print("Escribe los coeficientes en orden descendente,")
+    print("separados por espacios o comas.\n")
+
+    while True:
+        num = leer_coeficientes("Numerador: ")
+        den = leer_coeficientes("Denominador: ")
+
+        try:
+            A, B, C, D = tf2ss(num, den)
+        except ValueError as e:
+            print(f"Error: {e}\n")
+            continue
+
+        mostrar_matrices(A, B, C, D)
+
+        otra = input("\n¿Calcular otra función? (s/n): ").strip().lower()
+        if otra != "s":
+            break
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\nSaliendo.")
 
 

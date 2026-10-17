@@ -29,6 +29,20 @@
         <button type="submit">Calcular matrices</button>
     </form>
 
+    {% if error %}
+        <h2>Error</h2>
+        <p>{{ error }}</p>
+    {% endif %}
+
+    {% if matrices %}
+        <h2>Resultados</h2>
+
+        {% for nombre, matriz in matrices.items() %}
+            <h3>Matriz {{ nombre }}</h3>
+            <pre>{{ matriz }}</pre>
+        {% endfor %}
+    {% endif %}
+    
 </body>
 </html>
 

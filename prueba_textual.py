@@ -1,31 +1,58 @@
+
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Input
 
 
 class PruebaTextual(App):
-
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Static("Introduce los coeficientes del numerador:")
-        yield Input(placeholder="Ejemplo: 1, 3", id="numerador")
+
+        yield Static("Coeficientes del numerador:")
+        yield Input(
+            placeholder="Ejemplo: 1",
+            id="numerador"
+        )
+
+        yield Static("Coeficientes del denominador:")
+        yield Input(
+            placeholder="Ejemplo: 1, -3, 2",
+            id="denominador"
+        )
+
         yield Static("", id="resultado")
         yield Footer()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        texto = event.value
+        numerador_texto = self.query_one("#numerador", Input).value
+        denominador_texto = self.query_one("#denominador", Input).value
+
         resultado = self.query_one("#resultado", Static)
 
         try:
-            partes = texto.split(",")
-            coeficientes = [float(p.strip()) for p in partes]
+            numerador = [
+                float(p.strip())
+                for p in numerador_texto.split(",")
+            ]
 
-            resultado.update(f"Coeficientes: {coeficientes}")
+            denominador = [
+                float(p.strip())
+                for p in denominador_texto.split(",")
+            ]
+
+            resultado.update(
+                f"Numerador: {numerador}\n"
+                f"Denominador: {denominador}"
+            )
 
         except ValueError:
-            resultado.update("Error: introduce números separados por comas.")
+            resultado.update(
+                "Error: introduce números separados por comas."
+            )
 
 
 if __name__ == "__main__":
     PruebaTextual().run()
+
+
 
 
